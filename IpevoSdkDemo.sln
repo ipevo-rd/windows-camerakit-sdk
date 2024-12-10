@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpevoSdkDemo", "IpevoSdkDemo.csproj", "{7D0207ED-D6E8-4F35-B0C7-32DB32674491}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+		ReleaseSDK|x64 = ReleaseSDK|x64
+		ReleaseSDK|x86 = ReleaseSDK|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Debug|x64.ActiveCfg = Debug|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Debug|x64.Build.0 = Debug|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Debug|x86.ActiveCfg = Debug|x86
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Debug|x86.Build.0 = Debug|x86
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Release|x64.ActiveCfg = Release|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Release|x64.Build.0 = Release|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Release|x86.ActiveCfg = Release|x86
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.Release|x86.Build.0 = Release|x86
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.ReleaseSDK|x64.ActiveCfg = ReleaseSDK|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.ReleaseSDK|x64.Build.0 = ReleaseSDK|x64
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.ReleaseSDK|x86.ActiveCfg = ReleaseSDK|x86
+		{7D0207ED-D6E8-4F35-B0C7-32DB32674491}.ReleaseSDK|x86.Build.0 = ReleaseSDK|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
