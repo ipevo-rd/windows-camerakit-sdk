@@ -64,12 +64,14 @@ public class VlcHelper
     /// <param name="width"></param>
     /// <param name="height"></param>
     /// <param name="fps"></param>
+    /// <param name="mediaType"></param>
     /// <param name="callback"></param>
     /// <exception cref="InvalidOperationException"></exception>
-    public VlcHelper(string wmfPath, int width, int height, int fps, Action<Mat> callback)
+    public VlcHelper(string wmfPath, int width, int height, int fps, CameraKit.Core.MediaType mediaType, Action<Mat> callback)
     {
         var dsName = GetDsName(wmfPath);
         if (dsName == null) throw new InvalidOperationException("No match path from Direct Show");
+        if (mediaType != CameraKit.Core.MediaType.Mjpeg) throw new ArgumentOutOfRangeException("only mjpg supported in VLC demo");
 
         videoWidth = width;
         videoHeight = height;

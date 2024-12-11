@@ -143,6 +143,7 @@ namespace IpevoSdkDemo
             var w = Convert.ToInt32(tarFormat[FormatKey.Width]);
             var h = Convert.ToInt32(tarFormat[FormatKey.Height]);
             var fps = Convert.ToInt32(tarFormat[FormatKey.Fps]);
+            var mType = (MediaType)Enum.Parse(typeof(MediaType), tarFormat[FormatKey.MediaType].ToString());
 
             // IPEVO WiFi series camera
             if (camera is IcNetCamera netCam)
@@ -161,7 +162,7 @@ namespace IpevoSdkDemo
             else
             {
                 //start capture
-                vlc = new VlcHelper(camera.DevicePath, w, h, fps, RenderImage);
+                vlc = new VlcHelper(camera.DevicePath, w, h, fps, mType, RenderImage);
             }
         }
 
