@@ -84,6 +84,8 @@ public class VlcHelper
         player = new MediaPlayer(libVlc);
 
         //using direct show via VLC
+        //Warning !!! The VLC library currently only supports using the camera name as a parameter for initialization.
+        //Therefore, if there are two cameras with the same name, it will only access the first one.
         var deviceName = @"dshow://";
         string[] options =
         [
