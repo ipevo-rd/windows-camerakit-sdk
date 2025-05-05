@@ -16,25 +16,25 @@ namespace IpevoSdkDemo;
  * It does not support advanced functionalities such as image acquisition, image customization, or video recording.
  * You need to decide on the image framework based on your development requirements and implement these features accordingly.
  *
- * Here, we simply use VLC to provide the most basic usage example.
- *
+ * Here, we simply use VLC to provide the most basic usage example. *
  * As a popular open-source framework, VLC offers diverse support for camera image acquisition.
  * We use the **LibVLCSharp** and **VideoLAN.LibVLC.Windows** packages to access native VLC functionality.
  * It is a .NET wrapper for VLC, providing an easy way to install and utilize VLC features.
  * https://code.videolan.org/videolan/libvlc-nuget 
  *
- * If it does not suit your use case, you can consider using other image frameworks supported by Windows as below. 
+ * Remember... VLC is an easy but not perfected camera solution. 
+ * If it does not suit your use case, you can consider using other image frameworks supported by Windows as below.
  *
- * DirectShow
+ * DirectShow (C++)
  * https://learn.microsoft.com/windows/win32/directshow/directshow
  *
- * Windows Media Foundation
+ * Windows Media Foundation (C++)
  * https://learn.microsoft.com/zh-tw/windows/win32/medfound/microsoft-media-foundation-sdk
  *
- * Windows Media Foundation C# Sample
+ * Windows Media Foundation C# Sample (C#)
  * https://github.com/OfItselfSo/Tanta
  *
- * OpenCV
+ * OpenCV (C#)
  * https://github.com/shimat/opencvsharp
  *
  */
