@@ -12,8 +12,8 @@ namespace IpevoSdkDemo;
 /*
  * **Note:** This class is for demonstration purposes only and is not part of the SDK functionality.
  *
- * Please note that the IPEVO SDK "only" provides access to supported features of IPEVO cameras.
- * It does not support advanced functionalities such as image acquisition, image customization, or video recording.
+ * Warning !! Please note that the IPEVO SDK "Only" provides access to supported features of IPEVO cameras.
+ * It does "Not" support advanced functionalities such as image acquisition, image customization, or video recording.
  * You need to decide on the image framework based on your development requirements and implement these features accordingly.
  *
  * Here, we simply use VLC to provide the most basic usage example. *
@@ -22,7 +22,8 @@ namespace IpevoSdkDemo;
  * It is a .NET wrapper for VLC, providing an easy way to install and utilize VLC features.
  * https://code.videolan.org/videolan/libvlc-nuget 
  *
- * Remember... VLC is an easy but not perfected camera solution. 
+ * Remember!! VLC is an easy but not perfected camera solution.
+ * It has some issues of performance and compatibility.
  * If it does not suit your use case, you can consider using other image frameworks supported by Windows as below.
  *
  * DirectShow (C++)
