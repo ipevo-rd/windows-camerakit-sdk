@@ -1,4 +1,4 @@
-﻿using CameraKit.Core.ToolKit;
+using CameraKit.Core.ToolKit;
 using DirectShowLib;
 using LibVLCSharp.Shared;
 using OpenCvSharp;
@@ -92,7 +92,8 @@ public class VlcHelper
             $":dshow-vdev={dsName}",
             ":dshow-adev=none",
             $":dshow-size={width}x{height}", 
-            $":dshow-fps={fps}"
+            $":dshow-fps={fps}",
+            ":dshow-chroma=mjpg"
         ];
         var media = new Media(libVlc, deviceName, FromType.FromLocation, options);
  
