@@ -17,6 +17,10 @@ namespace IpevoSdkDemo
      * The SDK is integrated via NuGet and is located in the `.\LocalPackages` folder of the project.
      * It is imported into this project through the `nuget.config` file.
      *
+     * The following packages are included in `.\LocalPackages` and are required for using the SDK:
+     *   - CameraKit.Core.SDK: Core SDK for controlling IPEVO camera properties.
+     *   - CameraKit.Hid: HID support for certain camera models (e.g., P2V).
+     *
      * Since the SDK depends on third-party packages available on nuget.org,
      * please ensure that the development environment has access to nuget.org during the build process.
      *
