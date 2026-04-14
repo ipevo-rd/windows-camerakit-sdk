@@ -394,8 +394,8 @@ namespace IpevoSdkDemo
             }
             else
             {
-                NotificationCenter.SharedCenter.UnRegisterObserver(CamerasManager.Notification.FocusChanged, WhitebalanceChanged);
-                NotificationCenter.SharedCenter.UnRegisterObserver(CamerasManager.Notification.AutoFocusChanged, AutoWhitebalanceChanged);
+                NotificationCenter.SharedCenter.UnRegisterObserver(CamerasManager.Notification.FocusChanged, FocusChanged);
+                NotificationCenter.SharedCenter.UnRegisterObserver(CamerasManager.Notification.AutoFocusChanged, AutoFocusChanged);
                 NotificationCenter.SharedCenter.UnRegisterObserver(CamerasManager.Notification.AutoFocusModeChanged, AutoFocusModeChanged);
             }
         }
