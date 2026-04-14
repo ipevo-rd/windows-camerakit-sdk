@@ -1,4 +1,4 @@
-﻿using CameraKit.Core;
+using CameraKit.Core;
 using CameraKit.Core.CameraNet;
 using CameraKit.Core.ToolKit;
 using System;
@@ -24,8 +24,9 @@ namespace IpevoSdkDemo
      * Since the SDK depends on third-party packages available on nuget.org,
      * please ensure that the development environment has access to nuget.org during the build process.
      *
-     * Note: This SDK is Windows-only.
-     * It can be used in WinForms, WPF, and WinUI application development.
+     * Note: This SDK is Windows-only and targets .NET Standard 2.0.
+     * It can be used with .NET Framework 4.6.2 or later, or .NET 8 or later.
+     * Supported application types include WinForms, WPF, and WinUI.
      *
      * ---
      *
