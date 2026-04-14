@@ -70,7 +70,8 @@ namespace IpevoSdkDemo
         /// <param name="e"></param>
         private void OnLoad(object sender, EventArgs e)
         {
-            //set SynchronizationContext to SDK NotificationCenter, this is "WinForm only"
+            //Set SynchronizationContext to ensure SDK event callbacks are executed on the UI thread.
+            //This is required for WinForms applications only.
             NotificationCenter.SynchronizationContext = SynchronizationContext.Current;
 
             //register inner log from CameraKit.Core, this is helpful when debugging
@@ -125,9 +126,9 @@ namespace IpevoSdkDemo
             var camera = ActCamera;
             if (camera == null) return;
 
-            //if this camera is a IcNetCamera, for example, VZ-X wifi mode
-            //you should try to log in it at first
-            //admin/admin is a default account and password
+            //The SDK supports both USB cameras (IcCamera) and network cameras (IcNetCamera).
+            //For network cameras (e.g., VZ-X in Wi-Fi mode), you must log in before use.
+            //admin/admin is the default account and password.
             if (camera is IcNetCamera netCamera)
             {
                 netCamera.NetDeviceAccount = "admin";
@@ -168,7 +169,11 @@ namespace IpevoSdkDemo
         }
 
         /// <summary>
-        /// when using SDK api, always remember to check result of camera api
+        /// When using SDK APIs, always check the return value.
+        /// Common CommandReturnValue values include:
+        ///   - Succeeded:       The operation completed successfully
+        ///   - NotSupported:    The camera does not support this feature
+        ///   - Failed:          The operation failed
         /// </summary>
         /// <param name="crv"></param>
         private static void AssertCamOperationResult(CommandReturnValue crv)
@@ -262,8 +267,16 @@ namespace IpevoSdkDemo
         /*
          * This section demonstrates how to control the white balance property of a camera.
          * The same pattern can be applied to other camera properties.
+         *
+         * Before calling any property method, use HasCapability() to verify
+         * that the camera supports the specific feature.
+         *
+         * When getting property values, specify the PropertyValueType:
+         *   - Current:  The current value of the property
+         *   - Maximum:  The maximum allowed value
+         *   - Minimum:  The minimum allowed value
+         *   - Delta:    The step size for value adjustments
          */
-
         private void InitWhiteBalance()
         {
             var tarCam = ActCamera;
