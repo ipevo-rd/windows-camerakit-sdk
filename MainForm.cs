@@ -12,18 +12,45 @@ using System.Windows.Forms;
 namespace IpevoSdkDemo
 {
     /*
-     * This project demonstrates how to use the IPEVO Camera SDK ( CameraKit.Core ) to control IPEVO products.
+     * This project demonstrates how to use the IPEVO Camera SDK (CameraKit.Core) to control IPEVO products.
      *
      * The SDK is integrated via NuGet and is located in the `.\LocalPackages` folder of the project.
-     *
      * It is imported into this project through the `nuget.config` file.
      *
-     * Since it depends on other third-party public packages available on nuget.org,
+     * Since the SDK depends on third-party packages available on nuget.org,
      * please ensure that the development environment has access to nuget.org during the build process.
      *
-     * This SDK is windows only!!
-     * You can use it in WinForm, WPF and WinUI windows application development.
+     * Note: This SDK is Windows-only.
+     * It can be used in WinForms, WPF, and WinUI application development.
      *
+     * ---
+     *
+     * Camera operations are primarily based on the IcCamera interface,
+     * which provides methods for accessing and setting all available camera properties.
+     *
+     * By subscribing to relevant events from NotificationCenter.SharedCenter,
+     * you can receive notifications when the camera undergoes automatic changes,
+     * such as adjustments to the auto white balance or focus values.
+     *
+     * Refer to the list defined in CamerasManager.Notification to identify
+     * which notifications are available for subscription.
+     *
+     * All IcCamera methods are designed with consistency,
+     * allowing you to apply the same patterns across different camera properties.
+     *
+     * For better readability, this demo only implements representative methods of IcCamera.
+     * Other methods not demonstrated here can be used in a similar manner.
+     *
+     * ---
+     *
+     * This SDK provides control over IPEVO camera properties,
+     * but 'does not' include implementation for capturing video frames from the camera.
+     * 
+     * For capturing video on Windows, refer to various video API frameworks:
+     *   - VLC (LibVLCSharp): https://github.com/videolan/libvlcsharp
+     *   - OpenCV (OpenCvSharp): https://github.com/shimat/opencvsharp
+     *   - Windows Media Foundation (WMF): https://learn.microsoft.com/en-us/windows/win32/medfound/microsoft-media-foundation-sdk
+     *   - DirectShow: https://learn.microsoft.com/en-us/windows/win32/directshow/directshow
      */
 
     public partial class MainForm:Form
@@ -35,7 +62,12 @@ namespace IpevoSdkDemo
             Load += OnLoad;
             Closing += OnClosing;
         }
-
+                
+        /// <summary>
+        /// Perform one-time initialization required for using the SDK.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnLoad(object sender, EventArgs e)
         {
             //set SynchronizationContext to SDK NotificationCenter, this is "WinForm only"
@@ -66,6 +98,11 @@ namespace IpevoSdkDemo
             DealNotifyEventOfDeviceButton(true);
         }
 
+        /// <summary>
+        /// Perform cleanup and release resources required by the SDK.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void OnClosing(object sender, CancelEventArgs e)
         {
             //release SDK when application off
@@ -78,6 +115,11 @@ namespace IpevoSdkDemo
             DealNotifyEventOfDeviceButton(false);
         }
 
+        /// <summary>
+        /// select camera from combo box, then you can control it through SDK api.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CameraComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             var camera = ActCamera;
@@ -109,8 +151,6 @@ namespace IpevoSdkDemo
             InitFocus();
         }
 
-        #region Helper
-        
         /// <summary>
         /// open system camera application, this is not necessary for using SDK,
         /// just a demo for checking the result of SDK api operation.
@@ -157,19 +197,17 @@ namespace IpevoSdkDemo
                 default:
                     throw new ArgumentOutOfRangeException(nameof(afMode), afMode, null);
             }
-        }       
-
-        #endregion
+        }        
 
         #region SDK Example of CameraManager
 
         /*
-         * CamerasManager.SharedManager is a global manager that provides users to
-         * access interface of IPEVO cameras currently connected to the local system.
-         * Through these interfaces, users can further control these cameras.
+         * CamerasManager.SharedManager is a global manager that provides access to
+         * the interfaces of IPEVO cameras currently connected to the local system.
+         * Through these interfaces, you can further control the cameras.
          *
-         * By listening to its events, you can receive clear notifications when these cameras are added to or removed from the system.
-         *
+         * By subscribing to its events, you can receive notifications
+         * when cameras are added to or removed from the system.
          */
 
         private IcCamera ActCamera
@@ -222,17 +260,8 @@ namespace IpevoSdkDemo
         #region SDK Example of Camera WhiteBalance operation
 
         /*
-         * The IPEVO camera operations are primarily based on the **IcCamera** interface,
-         * which provides methods for accessing or setting all available camera properties.         * 
-         *
-         * Additionally, by subscribing to relevant events from **NotificationCenter.SharedCenter**,
-         * you can receive notifications when the camera undergoes automatic changes such as adjustments to the auto white balance value.         *
-         * These change events are triggered automatically and provide you with the current white balance value.
-         *
-         * From the list defined in **CamerasManager.Notification**, you can identify which notifications can be accessed by this way.
-         *
-         * All IcCamera methods are designed with consistency, allowing you to derive the handling of other properties from the following example.
-         *
+         * This section demonstrates how to control the white balance property of a camera.
+         * The same pattern can be applied to other camera properties.
          */
 
         private void InitWhiteBalance()
@@ -339,8 +368,8 @@ namespace IpevoSdkDemo
         #region SDK Example of Camera Focus operation
 
         /*
-         * In the part of the camera's focus function, you can see an astonishing similarity to the way white balance is used,
-         * except it includes some additional controllable attributes.
+         * The camera focus functionality follows a similar pattern to white balance,
+         * with some additional controllable attributes.
          */
 
         private void InitFocus()
@@ -489,9 +518,10 @@ namespace IpevoSdkDemo
 
         /*
          * This demonstrates how to listen for physical button press events from a camera.
-         * When an event is triggered, you can decide how to handle it.
-         * Additionally, physical events are monitored periodically for changes.
-         * Rapid button presses may result in changes going undetected, in which case the event will not be triggered.
+         * When an event is triggered, you can determine how to handle it.
+         *
+         * Note: Physical button states are monitored periodically.
+         * Rapid button presses may not be detected, and in such cases, the event will not be triggered.
          */
 
         private void DealNotifyEventOfDeviceButton(bool isReg)
