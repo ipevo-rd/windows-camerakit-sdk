@@ -1,13 +1,10 @@
 ﻿using CameraKit.Core;
 using CameraKit.Core.CameraNet;
 using CameraKit.Core.ToolKit;
-using OpenCvSharp;
 using System;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
@@ -41,10 +38,9 @@ namespace IpevoSdkDemo
 
         private void OnLoad(object sender, EventArgs e)
         {
-            //Set SynchronizationContext to SDK NotificationCenter, this is "WinForm only"
+            //set SynchronizationContext to SDK NotificationCenter, this is "WinForm only"
             NotificationCenter.SynchronizationContext = SynchronizationContext.Current;
 
-#if DEBUG
             //register inner log from CameraKit.Core, this is helpful when debugging
             NotificationCenter.SharedCenter.RegisterObserver(NotificationCenter.LoggerName, (name, o, info) =>
             {
@@ -55,7 +51,6 @@ namespace IpevoSdkDemo
                     Debug.WriteLine(dataValue);
                 }
             });
-#endif
 
             //invoke SDK when application on
             DealNotifyEventOfCameraManager(true);
@@ -73,12 +68,10 @@ namespace IpevoSdkDemo
 
         private void OnClosing(object sender, CancelEventArgs e)
         {
-            //stop working capture if exist
-            vlc?.Dispose();
-            vlc = null;
-
             //release SDK when application off
             CamerasManager.SharedManager.StopMonitor();
+
+            //unsubscribe events
             DealNotifyEventOfCameraManager(false);
             DealNotifyEventOfWhiteBalance(false);
             DealNotifyEventOfFocus(false);
@@ -87,14 +80,10 @@ namespace IpevoSdkDemo
 
         private void CameraComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //stop working capture if exist
-            vlc?.Dispose();
-            vlc = null;
-
             var camera = ActCamera;
             if (camera == null) return;
 
-            //if this camera is a IcNetCamera, for example, VZ-X
+            //if this camera is a IcNetCamera, for example, VZ-X wifi mode
             //you should try to log in it at first
             //admin/admin is a default account and password
             if (camera is IcNetCamera netCamera)
@@ -110,139 +99,33 @@ namespace IpevoSdkDemo
                 }
             }
 
-            //obtain the supported formats from camera
-            //you can access more detail of format via *FormatKey* index
-            ResolutionComboBox.Items.Clear();
-            foreach (var value in camera.GetSupportedFormats())
-            {
-                ResolutionComboBox.Items.Add(value[FormatKey.FormatInfo]);
-            }
-            ResolutionComboBox.Text = string.Empty;
+            //obtain the supported formats from camera if you want.
+            var supprotedFormats = camera.GetSupportedFormats();
+            var formatStr = string.Join("\n", supprotedFormats.Select(format => format[FormatKey.FormatInfo]));
+            MessageBox.Show($@"This camera supports {supprotedFormats.Count} formats \n {formatStr}");
 
             //obtain the latest status of camera
             InitWhiteBalance();
             InitFocus();
         }
 
-        private void ResolutionComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //stop working streaming
-            vlc?.Dispose();
-            vlc = null;
-
-            var camera = ActCamera;
-            if (camera == null) return;
-
-            //find target format object
-            var tarFormat = camera
-                .GetSupportedFormats()
-                .FirstOrDefault(f => f[FormatKey.FormatInfo].ToString() == ResolutionComboBox.SelectedItem.ToString());
-            if (tarFormat is null) throw new InvalidOperationException("null format");
-
-            //parse format args for capture
-            var w = Convert.ToInt32(tarFormat[FormatKey.Width]);
-            var h = Convert.ToInt32(tarFormat[FormatKey.Height]);
-            var fps = Convert.ToInt32(tarFormat[FormatKey.Fps]);
-            var mType = (MediaType)Enum.Parse(typeof(MediaType), tarFormat[FormatKey.MediaType].ToString());
-
-            // IPEVO WiFi series camera
-            if (camera is IcNetCamera netCam)
-            {
-                //asking remote camera to use this format and start streaming
-                AssertCamOperationResult(netCam.SetFormat(tarFormat));
-
-                //start capture
-                vlc = new VlcHelper(
-                    netCam.DevicePath,
-                    w,
-                    h,
-                    RenderImage);
-            }
-            //IPEVO usb camera
-            else
-            {
-                //start capture
-                vlc = new VlcHelper(camera.DevicePath, w, h, fps, mType, RenderImage);
-            }
-        }
-
-        #region Capture Image Render
-
-        /*
-         * **Note:** This is for demonstration purposes only and is not part of the SDK functionality.
-         *
-         * Here is a demonstration of how to easily display an image stored in a Mat object on the screen.
-         * This method is specifically designed for outputting with VLC or OpenCV.
-         * If you are using a different image framework, you will need to implement the required output functionality for your image object accordingly.
-         *
-         */
-
-        /// <summary>
-        /// Here we use VLC library to fetch image from camera
-        /// </summary>
-        private VlcHelper vlc;
-
-        /// <summary>
-        /// Bitmap object for UI layout
-        /// </summary>
-        private Bitmap captureImage;
-
-        /// <summary>
-        /// Render Mat image to UI layout
-        /// </summary>
-        /// <param name="image"></param>
-        private void RenderImage(Mat image)
-        {
-            unsafe
-            {
-                // copy image data into buffer
-                var width = image.Width;
-                var height = image.Height;
-                var dataLen = image.Width * image.Height * image.Channels();
-
-                // render buffer data in ui thread
-                BeginInvoke(() =>
-                {
-                    try
-                    {
-                        RbgDataToBitmap();
-                        image.Dispose();
-                        resLabel.Text = @$"{width} * {height}";
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.ToString());
-                    }
-                });
-
-                return;
-
-                //Write RGB data into Bitmap object and refresh UI layout
-                void RbgDataToBitmap()
-                {
-                    if (captureImage == null || captureImage.Width != width || captureImage.Height != height)
-                    {
-                        captureImage = new Bitmap(width, height, PixelFormat.Format24bppRgb);
-                        pictureBox.Image = captureImage;
-                    }
-
-                    var bmData = captureImage.LockBits(
-                        new Rectangle(0, 0, captureImage.Width, captureImage.Height),
-                        ImageLockMode.ReadWrite,
-                        captureImage.PixelFormat);
-
-                    var scan0 = bmData.Scan0;
-                    var srcPtr = (IntPtr)image.DataPointer;
-                    srcPtr.CopyTo(scan0, dataLen);
-                    captureImage.UnlockBits(bmData);
-                    pictureBox.Invalidate();
-                }
-            }
-        }
-
-        #endregion
-
         #region Helper
+        
+        /// <summary>
+        /// open system camera application, this is not necessary for using SDK,
+        /// just a demo for checking the result of SDK api operation.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private async void OpenCamButton_Click(object sender, EventArgs e)
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "microsoft.windows.camera:",
+                UseShellExecute = true
+            };
+            Process.Start(startInfo);
+        }
 
         /// <summary>
         /// when using SDK api, always remember to check result of camera api
@@ -274,7 +157,7 @@ namespace IpevoSdkDemo
                 default:
                     throw new ArgumentOutOfRangeException(nameof(afMode), afMode, null);
             }
-        }
+        }       
 
         #endregion
 
@@ -453,7 +336,7 @@ namespace IpevoSdkDemo
 
         #endregion
 
-        #region SDK Example of Focus
+        #region SDK Example of Camera Focus operation
 
         /*
          * In the part of the camera's focus function, you can see an astonishing similarity to the way white balance is used,

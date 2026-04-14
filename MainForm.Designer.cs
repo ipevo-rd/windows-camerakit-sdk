@@ -29,9 +29,7 @@ namespace IpevoSdkDemo
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox = new System.Windows.Forms.PictureBox();
             this.CameraComboBox = new System.Windows.Forms.ComboBox();
-            this.ResolutionComboBox = new System.Windows.Forms.ComboBox();
             this.buttonWbDec = new System.Windows.Forms.Button();
             this.buttonWbAdd = new System.Windows.Forms.Button();
             this.checkBoxWB = new System.Windows.Forms.CheckBox();
@@ -43,45 +41,23 @@ namespace IpevoSdkDemo
             this.buttonFocusDec = new System.Windows.Forms.Button();
             this.afModeLabel = new System.Windows.Forms.Label();
             this.buttonAfMode = new System.Windows.Forms.Button();
-            this.resLabel = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
+            this.openCamButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // pictureBox
-            // 
-            this.pictureBox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.pictureBox.Location = new System.Drawing.Point(29, 28);
-            this.pictureBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.pictureBox.Name = "pictureBox";
-            this.pictureBox.Size = new System.Drawing.Size(780, 546);
-            this.pictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox.TabIndex = 0;
-            this.pictureBox.TabStop = false;
             // 
             // CameraComboBox
             // 
             this.CameraComboBox.FormattingEnabled = true;
-            this.CameraComboBox.Location = new System.Drawing.Point(847, 28);
+            this.CameraComboBox.Location = new System.Drawing.Point(52, 87);
             this.CameraComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.CameraComboBox.Name = "CameraComboBox";
             this.CameraComboBox.Size = new System.Drawing.Size(283, 23);
             this.CameraComboBox.TabIndex = 1;
             this.CameraComboBox.SelectedIndexChanged += new System.EventHandler(this.CameraComboBox_SelectedIndexChanged);
             // 
-            // ResolutionComboBox
-            // 
-            this.ResolutionComboBox.FormattingEnabled = true;
-            this.ResolutionComboBox.Location = new System.Drawing.Point(847, 67);
-            this.ResolutionComboBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.ResolutionComboBox.Name = "ResolutionComboBox";
-            this.ResolutionComboBox.Size = new System.Drawing.Size(283, 23);
-            this.ResolutionComboBox.TabIndex = 2;
-            this.ResolutionComboBox.SelectedIndexChanged += new System.EventHandler(this.ResolutionComboBox_SelectedIndexChanged);
-            // 
             // buttonWbDec
             // 
-            this.buttonWbDec.Location = new System.Drawing.Point(968, 108);
-            this.buttonWbDec.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonWbDec.Location = new System.Drawing.Point(183, 134);
+            this.buttonWbDec.Margin = new System.Windows.Forms.Padding(2);
             this.buttonWbDec.Name = "buttonWbDec";
             this.buttonWbDec.Size = new System.Drawing.Size(51, 25);
             this.buttonWbDec.TabIndex = 3;
@@ -91,8 +67,8 @@ namespace IpevoSdkDemo
             // 
             // buttonWbAdd
             // 
-            this.buttonWbAdd.Location = new System.Drawing.Point(1031, 108);
-            this.buttonWbAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonWbAdd.Location = new System.Drawing.Point(246, 134);
+            this.buttonWbAdd.Margin = new System.Windows.Forms.Padding(2);
             this.buttonWbAdd.Name = "buttonWbAdd";
             this.buttonWbAdd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonWbAdd.Size = new System.Drawing.Size(51, 25);
@@ -104,8 +80,8 @@ namespace IpevoSdkDemo
             // checkBoxWB
             // 
             this.checkBoxWB.AutoSize = true;
-            this.checkBoxWB.Location = new System.Drawing.Point(847, 112);
-            this.checkBoxWB.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxWB.Location = new System.Drawing.Point(62, 138);
+            this.checkBoxWB.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxWB.Name = "checkBoxWB";
             this.checkBoxWB.Size = new System.Drawing.Size(61, 19);
             this.checkBoxWB.TabIndex = 5;
@@ -116,7 +92,7 @@ namespace IpevoSdkDemo
             // wbLabel
             // 
             this.wbLabel.AutoSize = true;
-            this.wbLabel.Location = new System.Drawing.Point(1110, 115);
+            this.wbLabel.Location = new System.Drawing.Point(325, 141);
             this.wbLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.wbLabel.Name = "wbLabel";
             this.wbLabel.Size = new System.Drawing.Size(14, 15);
@@ -126,8 +102,8 @@ namespace IpevoSdkDemo
             // 
             // focusButton
             // 
-            this.focusButton.Location = new System.Drawing.Point(1047, 200);
-            this.focusButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.focusButton.Location = new System.Drawing.Point(262, 226);
+            this.focusButton.Margin = new System.Windows.Forms.Padding(2);
             this.focusButton.Name = "focusButton";
             this.focusButton.Size = new System.Drawing.Size(69, 32);
             this.focusButton.TabIndex = 7;
@@ -138,7 +114,7 @@ namespace IpevoSdkDemo
             // focusLabel
             // 
             this.focusLabel.AutoSize = true;
-            this.focusLabel.Location = new System.Drawing.Point(1110, 165);
+            this.focusLabel.Location = new System.Drawing.Point(325, 191);
             this.focusLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.focusLabel.Name = "focusLabel";
             this.focusLabel.Size = new System.Drawing.Size(14, 15);
@@ -149,8 +125,8 @@ namespace IpevoSdkDemo
             // checkBoxAF
             // 
             this.checkBoxAF.AutoSize = true;
-            this.checkBoxAF.Location = new System.Drawing.Point(847, 162);
-            this.checkBoxAF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.checkBoxAF.Location = new System.Drawing.Point(62, 188);
+            this.checkBoxAF.Margin = new System.Windows.Forms.Padding(2);
             this.checkBoxAF.Name = "checkBoxAF";
             this.checkBoxAF.Size = new System.Drawing.Size(47, 19);
             this.checkBoxAF.TabIndex = 10;
@@ -160,8 +136,8 @@ namespace IpevoSdkDemo
             // 
             // buttonFocusAdd
             // 
-            this.buttonFocusAdd.Location = new System.Drawing.Point(1031, 158);
-            this.buttonFocusAdd.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonFocusAdd.Location = new System.Drawing.Point(246, 184);
+            this.buttonFocusAdd.Margin = new System.Windows.Forms.Padding(2);
             this.buttonFocusAdd.Name = "buttonFocusAdd";
             this.buttonFocusAdd.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.buttonFocusAdd.Size = new System.Drawing.Size(51, 25);
@@ -172,8 +148,8 @@ namespace IpevoSdkDemo
             // 
             // buttonFocusDec
             // 
-            this.buttonFocusDec.Location = new System.Drawing.Point(968, 158);
-            this.buttonFocusDec.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonFocusDec.Location = new System.Drawing.Point(183, 184);
+            this.buttonFocusDec.Margin = new System.Windows.Forms.Padding(2);
             this.buttonFocusDec.Name = "buttonFocusDec";
             this.buttonFocusDec.Size = new System.Drawing.Size(51, 25);
             this.buttonFocusDec.TabIndex = 8;
@@ -184,7 +160,7 @@ namespace IpevoSdkDemo
             // afModeLabel
             // 
             this.afModeLabel.AutoSize = true;
-            this.afModeLabel.Location = new System.Drawing.Point(847, 209);
+            this.afModeLabel.Location = new System.Drawing.Point(62, 235);
             this.afModeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.afModeLabel.Name = "afModeLabel";
             this.afModeLabel.Size = new System.Drawing.Size(13, 15);
@@ -194,8 +170,8 @@ namespace IpevoSdkDemo
             // 
             // buttonAfMode
             // 
-            this.buttonAfMode.Location = new System.Drawing.Point(968, 200);
-            this.buttonAfMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.buttonAfMode.Location = new System.Drawing.Point(183, 225);
+            this.buttonAfMode.Margin = new System.Windows.Forms.Padding(2);
             this.buttonAfMode.Name = "buttonAfMode";
             this.buttonAfMode.Size = new System.Drawing.Size(66, 32);
             this.buttonAfMode.TabIndex = 13;
@@ -203,23 +179,22 @@ namespace IpevoSdkDemo
             this.buttonAfMode.UseVisualStyleBackColor = true;
             this.buttonAfMode.Click += new System.EventHandler(this.buttonAfMode_Click);
             // 
-            // resLabel
+            // openCamButton
             // 
-            this.resLabel.AutoSize = true;
-            this.resLabel.Location = new System.Drawing.Point(826, 559);
-            this.resLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.resLabel.Name = "resLabel";
-            this.resLabel.Size = new System.Drawing.Size(34, 15);
-            this.resLabel.TabIndex = 14;
-            this.resLabel.Text = "? * ?";
-            this.resLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.openCamButton.Location = new System.Drawing.Point(113, 12);
+            this.openCamButton.Name = "openCamButton";
+            this.openCamButton.Size = new System.Drawing.Size(184, 58);
+            this.openCamButton.TabIndex = 15;
+            this.openCamButton.Text = "Open Capture App";
+            this.openCamButton.UseVisualStyleBackColor = true;
+            this.openCamButton.Click += new System.EventHandler(this.OpenCamButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1164, 601);
-            this.Controls.Add(this.resLabel);
+            this.ClientSize = new System.Drawing.Size(428, 283);
+            this.Controls.Add(this.openCamButton);
             this.Controls.Add(this.buttonAfMode);
             this.Controls.Add(this.afModeLabel);
             this.Controls.Add(this.focusLabel);
@@ -231,24 +206,18 @@ namespace IpevoSdkDemo
             this.Controls.Add(this.checkBoxWB);
             this.Controls.Add(this.buttonWbAdd);
             this.Controls.Add(this.buttonWbDec);
-            this.Controls.Add(this.ResolutionComboBox);
             this.Controls.Add(this.CameraComboBox);
-            this.Controls.Add(this.pictureBox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "MainForm";
             this.Text = "IPEVO SDK Demo";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.ComboBox CameraComboBox;
-        private System.Windows.Forms.ComboBox ResolutionComboBox;
         private System.Windows.Forms.Button buttonWbDec;
         private System.Windows.Forms.Button buttonWbAdd;
         private System.Windows.Forms.CheckBox checkBoxWB;
@@ -260,7 +229,7 @@ namespace IpevoSdkDemo
         private System.Windows.Forms.Button buttonFocusDec;
         private System.Windows.Forms.Label afModeLabel;
         private System.Windows.Forms.Button buttonAfMode;
-        private System.Windows.Forms.Label resLabel;
+        private System.Windows.Forms.Button openCamButton;
     }
 }
 
