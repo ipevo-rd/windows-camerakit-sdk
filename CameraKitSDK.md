@@ -9,6 +9,7 @@ CameraKit.Core is the core library for IPEVO camera control, providing a unified
 - [Getting Started](#getting-started)
 - [CamerasManager](#camerasmanager)
 - [IcCamera Interface](#iccamera-interface)
+  - [Format and Resolution Constraints](#format-and-resolution-constraints)
 - [Enum Reference](#enum-reference)
 - [Complete Example](#complete-example)
 - [Notes](#notes)
@@ -147,14 +148,12 @@ bool hasImageAdjustment = camera.HasCapability(Capability.ImageAdjustment);
 ### Resolution and Format
 
 ```csharp
-// Get supported formats list
+// Get supported formats list (informational only)
 List<Dictionary<FormatKey, object>> formats = camera.GetSupportedFormats();
 
-// Set format
-CommandReturnValue result = camera.SetFormat(selectedFormat);
-
-// Get current format
-camera.GetFormat(out Dictionary<FormatKey, object> currentFormat);
+// The following methods are NOT supported in the SDK:
+// CommandReturnValue result = camera.SetFormat(selectedFormat);
+// camera.GetFormat(out Dictionary<FormatKey, object> currentFormat);
 ```
 
 **FormatKey Fields:**
@@ -169,7 +168,74 @@ camera.GetFormat(out Dictionary<FormatKey, object> currentFormat);
 | `StreamIndex` | Stream index |
 | `FormatIndex` | Format index |
 
-> **Note**: `SetFormat` is only effective when used with IPEVO's internal video streaming implementation. Format settings are dependent on the video streaming architecture, not the camera hardware itself. In SDK builds, `SetFormat` will have no effect.
+---
+
+### Format and Resolution Constraints
+
+> ⚠️ **Important**: `SetFormat` and `GetFormat` are **not supported** in the CameraKit SDK. These methods exist solely to satisfy IPEVO's internal video pipeline interface contract and will always return `CommandReturnValue.Unsupported` in SDK builds.
+
+#### Background: Why Format Control Is Unavailable
+
+Although IPEVO cameras expose a list of supported formats via `GetSupportedFormats()`, the actual resolution and frame rate negotiation does **not** occur at the camera object level. Instead, it is delegated entirely to the video streaming framework used by the host application.
+
+When a client application opens a camera stream through a framework such as **DirectShow** or **Windows Media Foundation (WMF)**, it is the framework itself—not the camera driver or the SDK—that negotiates and selects the output format during stream initialization. The resolution is determined by the media type filter the framework applies when connecting the capture graph or activating the source reader.
+
+As a result:
+
+- **`SetFormat`** has no effect in the SDK. Resolution selection must be performed at the streaming framework level.
+- **`GetFormat`** cannot return a meaningful value because no format has been committed outside of an active streaming session managed by a framework.
+- The camera hardware genuinely supports multiple formats; however, the selection of which format to use is a concern of the integration layer, not the SDK.
+
+#### Correct Approach by Framework
+
+**DirectShow** — Configure the capture format by enumerating and setting the media type on the `IAMStreamConfig` interface of the capture filter:
+
+```csharp
+// Pseudocode: Selecting a media type in DirectShow
+IAMStreamConfig streamConfig = /* obtain from capture pin */;
+streamConfig.GetNumberOfCapabilities(out int count, out int size);
+for (int i = 0; i < count; i++)
+{
+    streamConfig.GetStreamCaps(i, out AMMediaType mediaType, out VideoStreamConfigCaps caps);
+    // Inspect mediaType and select the desired resolution/fps
+    if (/* desired resolution? */)
+    {
+        streamConfig.SetFormat(mediaType);
+        break;
+    }
+}
+```
+
+> 📖 Reference: [IAMStreamConfig interface (DirectShow) — Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/api/strmif/nn-strmif-iamstreamconfig)
+
+**Windows Media Foundation (WMF)** — Configure the media type on the `IMFSourceReader` before starting the session:
+
+```csharp
+// Pseudocode: Selecting a media type in WMF
+IMFSourceReader reader = /* create from MFCreateSourceReaderFromMediaSource */;
+for (int i = 0; ; i++)
+{
+    IMFMediaType nativeType;
+    reader.GetNativeMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, i, out nativeType);
+    // nativeType.GetGUID(MF_MT_SUBTYPE), GetSize(MF_MT_FRAME_SIZE), etc.
+    if (/* desired format? */)
+    {
+        reader.SetCurrentMediaType(MF_SOURCE_READER_FIRST_VIDEO_STREAM, 0, nativeType);
+        break;
+    }
+}
+```
+
+> 📖 Reference: [IMFSourceReader::SetCurrentMediaType (WMF) — Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/api/mfreadwrite/nf-mfreadwrite-imfsourcereader-setcurrentmediatype)
+> 📖 Reference: [Configuring a WMF Video Capture Device — Microsoft Learn](https://learn.microsoft.com/en-us/windows/win32/medfound/configuring-a-video-capture-device)
+
+#### Summary Table
+
+| Method | Availability in SDK | Notes |
+|--------|--------------------|---------|
+| `GetSupportedFormats()` | ✅ Supported | Returns the list of formats the hardware can produce |
+| `SetFormat()` | ❌ Not supported | Must be done through DirectShow / WMF APIs |
+| `GetFormat()` | ❌ Not supported | No committed format outside a framework streaming session |
 
 ### Image Adjustment
 
@@ -561,6 +627,8 @@ class Program
    ```
 
 6. **Resource Cleanup**: Always call `StopMonitor()` when your application exits to properly release camera resources.
+
+7. **Format Control**: `SetFormat` and `GetFormat` are **not supported** in this SDK. Resolution and format negotiation must be performed through the video streaming framework (DirectShow or WMF) at stream-open time, not through the camera interface. See [Format and Resolution Constraints](#format-and-resolution-constraints) for detailed guidance.
 
 ---
 

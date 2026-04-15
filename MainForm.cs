@@ -28,7 +28,7 @@ namespace IpevoSdkDemo
      * It can be used with .NET Framework 4.6.2 or later, or .NET 8 or later.
      * Supported application types include WinForms, WPF, and WinUI.
      *
-     * ---
+     * ---     
      *
      * Camera operations are primarily based on the IcCamera interface,
      * which provides methods for accessing and setting all available camera properties.
@@ -47,6 +47,23 @@ namespace IpevoSdkDemo
      * Other methods not demonstrated here can be used in a similar manner.
      *
      * ---
+     *
+     * IMPORTANT - Format / Resolution Control:
+     *   IcCamera.SetFormat() and IcCamera.GetFormat() are NOT supported in this SDK.
+     *   These methods exist solely to satisfy IPEVO's internal video pipeline interface
+     *   and will always return CommandReturnValue.Unsupported.
+     *
+     *   Resolution and format selection must be performed at the streaming framework level
+     *   (e.g., IAMStreamConfig for DirectShow, IMFSourceReader for WMF) when the stream
+     *   session is being opened — not via the camera object.
+     *
+     *   IcCamera.GetSupportedFormats() is supported and can be used to enumerate the
+     *   formats that the camera hardware is capable of producing.
+     *
+     *   For full details and code examples, refer to:
+     *   CameraKitSDK.md > "Format and Resolution Constraints"
+     *
+     * --- 
      *
      * This SDK provides control over IPEVO camera properties,
      * but 'does not' include implementation for capturing video frames from the camera.
