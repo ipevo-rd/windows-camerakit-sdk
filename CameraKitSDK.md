@@ -120,6 +120,18 @@ Sets a custom camera implementation provider for the manager.
 
 `IcCamera` is the abstract base class for all cameras, defining a unified interface for camera control.
 
+> ⚠️ **Prerequisite — Active Video Stream Required**
+>
+> Most `IcCamera` API calls (property get/set) only take effect when the camera is actively streaming video.
+> Before invoking any camera control method, ensure that the camera stream has been started through your chosen
+> video framework (DirectShow, WMF, OpenCV, LibVLC, etc.).
+>
+> Behavior when called without an active stream varies by camera model:
+> - Some models return an error.
+> - Some models accept the call silently but produce no effect.
+>
+> To avoid unpredictable results, always guarantee the video stream is running before calling `IcCamera` APIs.
+
 ### Basic Properties
 
 | Property | Type | Description |
@@ -629,6 +641,8 @@ class Program
 6. **Resource Cleanup**: Always call `StopMonitor()` when your application exits to properly release camera resources.
 
 7. **Format Control**: `SetFormat` and `GetFormat` are **not supported** in this SDK. Resolution and format negotiation must be performed through the video streaming framework (DirectShow or WMF) at stream-open time, not through the camera interface. See [Format and Resolution Constraints](#format-and-resolution-constraints) for detailed guidance.
+
+8. **Active Stream Required**: `IcCamera` API calls only take effect when the camera is actively streaming video. Without an active stream, behavior is undefined and varies by camera model — some return errors, others silently accept the call with no effect. Always start the video stream through your chosen framework (DirectShow, WMF, OpenCV, etc.) before invoking any camera control API.
 
 ---
 
