@@ -162,12 +162,7 @@ namespace IpevoSdkDemo
                     CameraComboBox.SelectedItem = null;
                     return;
                 }
-            }
-
-            //obtain the supported formats from camera if you want.
-            var supprotedFormats = camera.GetSupportedFormats();
-            var formatStr = string.Join("\n", supprotedFormats.Select(format => format[FormatKey.FormatInfo]));
-            MessageBox.Show($@"This camera supports {supprotedFormats.Count} formats \n {formatStr}");
+            }            
 
             //obtain the latest status of camera
             InitWhiteBalance();
