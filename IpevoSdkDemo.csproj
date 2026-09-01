@@ -116,6 +116,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="README.md" />
     <None Include="CameraKitSDK.md" />
     <None Include="nuget.config" />
     <None Include="Properties\Settings.settings">
