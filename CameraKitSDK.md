@@ -315,8 +315,8 @@ camera.SetAutoExposure(true);
 camera.GetAutoExposure(out bool isAutoExposure);
 
 // Manual exposure value
-camera.SetExposure(8);
-camera.GetExposure(out short exposure, PropertyValueType.Current);
+camera.SetExposureCompensation(8);
+camera.GetExposureCompensation(out short exposure, PropertyValueType.Current);
 ```
 
 ### White Balance Control
@@ -456,7 +456,7 @@ camera.GetInnerCamera(out int currentPosition);
 |-------|-------------|
 | `Resolution` | Resolution adjustment |
 | `Filter` | Image filter |
-| `Exposure` | Exposure value |
+| `ExposureCompensation` | Exposure compensation value |
 | `AutoExposure` | Auto exposure toggle |
 | `WhiteBalance` | White balance value |
 | `AutoWhiteBalance` | Auto white balance toggle |
