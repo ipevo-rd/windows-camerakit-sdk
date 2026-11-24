@@ -746,8 +746,8 @@ namespace IpevoSdkDemo
             //3A properties: a value slider plus an auto switch
             StartSection(tabPage3A);
 
-            AddSliderRow("Exposure", Capability.Exposure, (IcCamera c, out short v, PropertyValueType t) => c.GetExposure(out v, t), (c, v) => c.SetExposure(v),
-                CamerasManager.Notification.ExposureChanged, CamerasManager.IndexString.ExposureValue,
+            AddSliderRow("Exposure", Capability.ExposureCompensation, (IcCamera c, out short v, PropertyValueType t) => c.GetExposureCompensation(out v, t), (c, v) => c.SetExposureCompensation(v),
+                CamerasManager.Notification.ExposureCompensationChanged, CamerasManager.IndexString.ExposureCompensationValue,
                 Capability.AutoExposure, (IcCamera c, out bool v) => c.GetAutoExposure(out v), (c, v) => c.SetAutoExposure(v),
                 CamerasManager.Notification.AutoExposureChanged, CamerasManager.IndexString.AutoExposureStatus);
 
